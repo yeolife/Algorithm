@@ -6,7 +6,7 @@ using tiii = tuple<int, int, int>;
 #define x first
 #define y second
 
-int n, m, l, ans = 1000;
+int n, m, l;
 int arr[53];
 
 bool pram(int mid) {
@@ -14,14 +14,10 @@ bool pram(int mid) {
     return true;
 
   int cnt = 0;
-
-  int tmp = -1;
+    
   for (int i = 1; i < n; i++) {
     if (arr[i] - arr[i - 1] <= mid || arr[i] - arr[i - 1] == 1)
       continue;
-
-    if ((arr[i] - arr[i - 1]) / mid > 1)
-      tmp = max(tmp, mid + (arr[i] - arr[i - 1]) % mid);
 
     cnt += (arr[i] - arr[i - 1]) / mid;
     if ((arr[i] - arr[i - 1]) % mid == 0)
@@ -64,7 +60,7 @@ int main() {
 
   n += idx;
 
-  int lo = 0, hi = 1e6;
+  int lo = 0, hi = 1e9;
   while (lo + 1 < hi) {
     int mid = (lo + hi) / 2;
 
