@@ -14,7 +14,7 @@ bool pram(int mid) {
     return true;
 
   int cnt = 0;
-    
+
   for (int i = 1; i < n; i++) {
     if (arr[i] - arr[i - 1] <= mid || arr[i] - arr[i - 1] == 1)
       continue;
@@ -70,7 +70,7 @@ int main() {
       hi = mid;
   }
 
-    cout << hi;
+  cout << hi;
 
   return 0;
 }
