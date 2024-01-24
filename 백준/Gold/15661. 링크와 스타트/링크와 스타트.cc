@@ -1,53 +1,38 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
+#include <algorithm>
 
-int n, ans = 1e9;
-int board[21][21];
-bool visited[21];
+int n, arr[22][22];
+bool cur[22];
+int ans = 1e9;
 
-void dfs(int depth, int idx) {
-	if(depth <= (n+1) / 2) {
-		int a = 0, b = 0;
-		for(int i = 0; i < n; i++) {
-			for(int j = i + 1; j < n; j++) {
-				if(visited[i] && visited[j])
-					a += board[i][j];
-				if(!visited[i] && !visited[j])
-					b += board[i][j];
-			}
-        }
-
-        ans = min(ans, abs(a - b));
-	}
-	
-    for(int i = idx; i < n; i++) {
-     
-	    if(visited[i]) continue;
-
-        visited[i] = true;
-        dfs(depth + 1, i);
-        visited[i] = false;
+void func(int k, int s0, int s1){
+    if(k == n){
+        ans = std::min(ans, std::abs(s0 - s1));
+        return;
     }
+
+    int t0 = 0, t1 = 0;
+    for(int i = 0; i < k; i++){
+        if(cur[i]) t1 += arr[i][k];
+        else t0 += arr[i][k];
+    }
+
+    func(k + 1, s0 + t0, s1);
+    cur[k] = true;
+    func(k + 1, s0, s1 + t1);
+    cur[k] = false;
 }
 
-int main() {
-    ios::sync_with_stdio(0); cin.tie(NULL);
-
-    cin >> n;
-
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) 
-            cin >> board[i][j];
+int main(){
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            int k;
+            scanf("%d", &k);
+            if(i > j) arr[j][i] += k;
+            else arr[i][j] += k;
+        }
     }
-    
-    for(int i = 0; i < n; i++) {
-        for(int j = i + 1; j < n; j++)
-        	board[i][j] += board[j][i];
-    }
-
-    dfs(0, 0);
-
-    cout << ans << '\n';
-
-    return 0;
+    func(0, 0, 0);
+    printf("%d", ans);
 }
