@@ -17,10 +17,10 @@ void func(int k, int s0, int s1){
         else t0 += arr[i][k];
     }
 
-    func(k + 1, s0 + t0, s1);
     cur[k] = true;
     func(k + 1, s0, s1 + t1);
     cur[k] = false;
+    func(k + 1, s0 + t0, s1);
 }
 
 int main(){
