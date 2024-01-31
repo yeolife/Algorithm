@@ -30,10 +30,8 @@ void dfs(int x, int y, int depth) {
 
         dfs(nx, ny, depth + 1);
         
-        if(nx != 0 || ny != 0) {
-            visited[nx][ny] = false;
-            ch[board[nx][ny]] = false;
-        }
+        visited[nx][ny] = false;
+        ch[board[nx][ny]] = false;
     }
 }
 
