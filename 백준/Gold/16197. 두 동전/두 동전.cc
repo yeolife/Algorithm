@@ -13,15 +13,7 @@ bool OOB(int x, int y) {
 }
 
 void dfs(int cnt, int x1, int y1, int x2, int y2) {
-    if(cnt > 10) return;
-
-    int result = OOB(x1, y1) + OOB(x2, y2);
-
-    if(result <= 1) {
-        if(result == 1)
-            ans = min(ans, cnt);
-        return;
-    }
+    if(cnt >= 10) return;
 
     for(int i = 0; i < 4; i++) {
         int nx1 = x1, ny1 = y1;
@@ -36,6 +28,14 @@ void dfs(int cnt, int x1, int y1, int x2, int y2) {
             ny2 += dy[i];
         }
 
+        int result = OOB(nx1, ny1) + OOB(nx2, ny2);
+        if(result <= 1) {
+            if(result == 1)
+                ans = min(ans, cnt + 1);
+            continue;
+        }
+
+        visited[nx1][ny1][nx2][ny2] = true;
         dfs(cnt + 1, nx1, ny1, nx2, ny2);
     }
 }
