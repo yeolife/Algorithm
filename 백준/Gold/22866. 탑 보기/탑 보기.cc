@@ -2,8 +2,8 @@
 using namespace std;
 using pii = pair<int, int>;
 
-stack<pii> st;
 int building[100001], dist[100001], ans[100001];
+stack<pii> st;
 
 int main() {
     int n;
@@ -12,16 +12,17 @@ int main() {
     for(int i = 0; i < n; i++)
         cin >> building[i];
 
+    memset(ans, -1, sizeof(ans));
+
     // 정방향
     for(int i = 0; i < n; i++) {
         while(!st.empty() && st.top().first <= building[i])
             st.pop();
 
+        if(!st.empty())
+            ans[i] = st.top().second;
+
         dist[i] += st.size();
-
-        if(!st.empty() && !ans[i])
-            ans[i] = st.top().second + 1;
-
         st.push({building[i], i});
     }
 
@@ -32,23 +33,17 @@ int main() {
         while(!st.empty() && st.top().first <= building[i])
             st.pop();
 
+        if(!st.empty() && ((abs(i - ans[i]) > abs(i - st.top().second)) || ans[i] == -1))
+            ans[i] = st.top().second;
+
         dist[i] += st.size();
-
-        if(!st.empty()) {
-            if (ans[i] == 0)
-                ans[i] = st.top().second + 1;
-            else if (abs(i - (ans[i] - 1)) > abs(i - st.top().second))
-                ans[i] = st.top().second + 1;
-        }
-
         st.push({building[i], i});
     }
 
     for(int i = 0 ; i < n; i++) {
-        if (dist[i] == 0)
-            cout << 0 << '\n';
-        else
-            cout << dist[i] << ' ' << ans[i] << '\n';
+        cout << dist[i];
+        if(dist[i] > 0) cout << ' ' << ans[i] + 1;
+        cout << '\n';
     }
 
     return 0;
