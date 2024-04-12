@@ -8,8 +8,15 @@ long long dp1[501], dp2[501], dp11[501], dp22[501];
 long long sum1[501], sum2[501];
 long long mx = -1;
 vector<int> ans;
-void go(int idx) {
-   if (idx >= n) {
+void go(int depth, int idx) {
+   if (depth >= n2) {
+       
+       v2.clear();
+        for(int i = 0, j = 0; i < n; i++) {          
+            if(v1[j] != i) v2.push_back(i);
+            else j++;
+        }
+       
       dp1[0] = dp2[0] = 1;
       for (int i = 1; i <= 500; i++) {
          dp1[i] = dp2[i] = 0;
@@ -45,22 +52,18 @@ void go(int idx) {
       }
       return;
    }
-   if (v1.size() < n2) {
-      v1.push_back(idx);
-      go(idx + 1);
-      v1.pop_back();
-   }
-   if (v2.size() < n2) {
-      v2.push_back(idx);
-      go(idx + 1);
-      v2.pop_back();
-   }
+    
+    for(int i = idx; i < n; i++) {
+        v1.push_back(i);        
+        go(depth + 1, i + 1);
+        v1.pop_back();
+    }
 }
 
 vector<int> solution(vector<vector<int>> dice) {
    n = dice.size();
    n2 = n / 2;
    d = dice;
-   go(0);
+   go(0, 0);
    return ans;
 }
