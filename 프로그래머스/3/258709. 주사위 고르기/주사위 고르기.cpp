@@ -1,69 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> v1, v2;
-int n, n2;
-vector<vector<int>> d;
-long long dp1[501], dp2[501], dp11[501], dp22[501];
-long long sum1[501], sum2[501];
-long long mx = -1;
-vector<int> ans;
-void go(int depth, int idx) {
-   if (depth >= n2) {
-       
-       v2.clear();
-        for(int i = 0, j = 0; i < n; i++) {          
-            if(v1[j] != i) v2.push_back(i);
+int n, per, win, lose;
+vector<int> A = {0}, B, ans;
+vector<vector<int> > dices;
+
+// 뽑은 주사위에서 하나씩 뽑기
+// A 순열과 B 순열 비교
+void permu(vector<int>& team, vector<int>& sums, int depth, int sum) {
+    if(depth == n) {
+        sums.push_back(sum);
+        
+        return;
+    }
+    
+    for(int i = 0; i < dices[team[depth]].size(); i++)
+        permu(team, sums, depth + 1, sum + dices[team[depth]][i]);
+}
+
+// 주사위 나눠 가지기
+void dfs(int depth, int idx) {
+    if(depth == n) {
+        B.clear();
+        for(int i = 0, j = 0; i < dices.size(); i++) {          
+            if(A[j] != i) B.push_back(i);
             else j++;
         }
-       
-      dp1[0] = dp2[0] = 1;
-      for (int i = 1; i <= 500; i++) {
-         dp1[i] = dp2[i] = 0;
-      }
-      for (int i = 0; i < n2; i++) {
-         for (int j = 0; j < 6; j++) {
-            int num = d[v1[i]][j];
-            for (int k = 500; k >= num; k--) {
-               dp11[k] += dp1[k - num];
-            }
-            num = d[v2[i]][j];
-            for (int k = 500; k >= num; k--) {
-               dp22[k] += dp2[k - num];
-            }
-         }
-         for (int j = 0; j <= 500; j++) {
-            dp1[j] = dp11[j];
-            dp2[j] = dp22[j];
-            dp11[j] = dp22[j] = 0;
-         }
-      }
-      for (int i = 1; i <= 500; i++) {
-         sum2[i] = sum2[i - 1] + dp2[i];
-      }
-      long long tmax = 0;
-      for (int i = 1; i <= 500; i++) {
-         tmax += dp1[i] * sum2[i - 1];
-      }
-      if (mx < tmax) {
-         mx = tmax;
-         ans.clear();
-         for (int i = 0; i < n2; i++)ans.push_back(v1[i] + 1);
-      }
-      return;
-   }
+        
+        vector<int> sumA, sumB;
+        permu(A, sumA, 0, 0);
+        permu(B, sumB, 0, 0);
+        
+        sort(sumA.begin(), sumA.end());
+        sort(sumB.begin(), sumB.end());
+        
+        int maxiA = 0;
+        for(int i = 0; i < sumA.size(); i++)
+            maxiA += lower_bound(sumB.begin(), sumB.end(), sumA[i]) - sumB.begin();
+            
+        int maxiB = 0;
+        for(int i = 0; i < sumB.size(); i++)
+            maxiB += lower_bound(sumA.begin(), sumA.end(), sumB[i]) - sumA.begin();
+                
+        if(maxiA > per || maxiB > per) {
+            ans = (maxiA > maxiB) ? A : B;
+            per = max(maxiA, maxiB);
+        }
+                 
+        return;
+    }
     
-    for(int i = idx; i < n; i++) {
-        v1.push_back(i);        
-        go(depth + 1, i + 1);
-        v1.pop_back();
+    for(int i = idx; i < dices.size(); i++) {
+        A.push_back(i);        
+        dfs(depth + 1, i + 1);
+        A.pop_back();
     }
 }
 
 vector<int> solution(vector<vector<int>> dice) {
-   n = dice.size();
-   n2 = n / 2;
-   d = dice;
-   go(0, 0);
-   return ans;
+    n = dice.size() / 2;
+        
+    dices = dice;
+    
+    dfs(1, 1);
+    
+    for(auto& it: ans) it++;
+    
+    return ans;
 }
