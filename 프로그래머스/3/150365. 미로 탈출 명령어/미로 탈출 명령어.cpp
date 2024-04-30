@@ -28,7 +28,7 @@ bool OOB(int x, int y) {
 
 // 남은 거리 > 갈 수 있는 거리(k - dp)
 bool available(int x, int y, int d) {
-    if(abs(ex - x) + abs(ey - y) > kk - d) return false;
+    if(abs(ex - x) + abs(ey - y) > kk - d) return false; 
     if((kk - d) & 1 && !((abs(ex - x) + abs(ey - y)) & 1)) return false;
     if(!((kk - d) & 1) && (abs(ex - x) + abs(ey - y)) & 1) return false;
     
