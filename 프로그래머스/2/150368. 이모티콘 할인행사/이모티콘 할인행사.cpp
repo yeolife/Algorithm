@@ -2,7 +2,7 @@
 using namespace std;
 
 int emoM, emoP;
-vector<int> comb;
+vector<int> permu;
 
 vector<vector<int>> user;
 vector<int> emo;
@@ -18,33 +18,28 @@ void dfs(int depth) {
         int cnt = 0, price = 0;
         
         for(int i = 0; i < user.size(); i++) {
-            int cp = 0;
-            bool flag = false;
+            int uprice = 0;
             for(int j = 0; j < emo.size(); j++) {
-                if(comb[j] >= user[i][0])
-                    cp += emo[j] * sales[comb[j]];
+                if(permu[j] >= user[i][0])
+                    uprice += emo[j] * sales[permu[j]];
             }
             
-            if(user[i][1] <= cp) cnt++;
-            else price += cp;            
+            if(user[i][1] <= uprice) cnt++;
+            else price += uprice;            
         }
         
-        if(cnt >= emoM) {            
-            if(cnt == emoM)
-                emoP = max(emoP, price);
-            else {
-                emoM = cnt;
-                emoP = price;
-            }
+        if(cnt >= emoM) {
+            emoP = (cnt == emoM) ? max(emoP, price) : price;
+            emoM = cnt;
         }
         
         return;
     }
     
     for(int i = 10; i <= 40; i += 10) {
-        comb.push_back(i);
+        permu.push_back(i);
         dfs(depth + 1);
-        comb.pop_back();
+        permu.pop_back();
     }
 }
 
