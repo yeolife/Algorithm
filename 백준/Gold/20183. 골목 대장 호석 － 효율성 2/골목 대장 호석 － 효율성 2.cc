@@ -23,7 +23,8 @@ long long dijkstra() {
     dist[st] = 0;
 
     while(!pq.empty()) {
-        int cur, su, d;
+        int cur;
+        ll su, d;
         tie(cur, su, d) = pq.top();
         pq.pop();
 
@@ -31,8 +32,8 @@ long long dijkstra() {
 
         for(int i = 0; i < nodes[cur].size(); i++) {
             int next = nodes[cur][i].first;
-            int nd = nodes[cur][i].second;
-            int nsu = max(su, nd);
+            ll nd = nodes[cur][i].second;
+            ll nsu = max(su, nd);
 
             if(dist[next] <= nsu) continue;
             if(money < d + nd) continue;
