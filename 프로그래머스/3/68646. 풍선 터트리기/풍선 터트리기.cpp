@@ -5,15 +5,13 @@ using namespace std;
 int solution(vector<int> a) {
     stack<int> st;
     
-    int cur = a[0];
-    st.push(a[0]);
-    
-    for(int i = 1; i < a.size(); i++) {
-        while(!st.empty() && (st.top() > a[i] && st.top() > cur))
+    int prev = 1e9;
+    for(int i = 0; i < a.size(); i++) {
+        while(!st.empty() && (st.top() > a[i] && st.top() > prev))
             st.pop();
         
         st.push(a[i]);
-        cur = min(cur, a[i]);
+        prev = min(prev, a[i]);
     }
     
     return st.size();
