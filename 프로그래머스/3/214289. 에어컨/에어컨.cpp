@@ -8,7 +8,7 @@ int dp[1001][51];
 int dfs(int ctime, int ctemp) {
     if(board[ctime] && (t1 > ctemp || t2 < ctemp))
         return 1e9;
-    if(ctime >= n)
+    if(ctime > n - 2)
         return 0;
 
     int& ret = dp[ctime][ctemp];
@@ -33,8 +33,6 @@ int solution(int temperature, int T1, int T2, int A, int B, vector<int> onboard)
     
     fill(&dp[0][0], &dp[1000][51], -1);
     
-    dp[n-1][t1] = dp[n-1][t1+1] = 0;
-
     if(outt > t2) outt = t1 - (outt - t2);
     if(outt < 0) {
         t1 += (-outt);
