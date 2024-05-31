@@ -1,12 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int outt, t1, t2, spow, dpow, n;
+int outt, t1, t2, a, b, n;
 vector<int> board;
-int dp[1001][101];
+int dp[1001][51];
 
 int dfs(int ctime, int ctemp) {
-    if(board[ctime] && (t1 > ctemp))
+    if(board[ctime] && (t1 > ctemp || t2 < ctemp))
         return 1e9;
     if(ctime >= n)
         return 0;
@@ -17,26 +17,25 @@ int dfs(int ctime, int ctemp) {
 
     if(ctemp == outt)
         ret = min(ret, dfs(ctime + 1, ctemp)); // 끔
-    if(ctemp - 1 >= outt)
+    if(ctemp > outt)
         ret = min(ret, dfs(ctime + 1, ctemp - 1)); // 끔
 
     if(ctemp <= t1)
-        ret = min(ret, dfs(ctime + 1, ctemp + 1) + dpow); // 켬(up)
-    ret = min(ret, dfs(ctime + 1, ctemp) + spow); // 켬(유지)
+        ret = min(ret, dfs(ctime + 1, ctemp + 1) + a); // 켬(up)
+    ret = min(ret, dfs(ctime + 1, ctemp) + b); // 켬(유지)
     
     return ret;
 }
 
-int solution(int temperature, int tt1, int tt2, int a, int b, vector<int> onboard) {
+int solution(int temperature, int T1, int T2, int A, int B, vector<int> onboard) {
     n = onboard.size();
-    outt = temperature + 10, t1 = tt1 + 10, t2 = tt2 + 10, dpow = a, spow = b, board = onboard;
+    outt = temperature + 10, t1 = T1 + 10, t2 = T2 + 10, a = A, b = B, board = onboard;
     
-    fill(&dp[0][0], &dp[1000][101], -1);
+    fill(&dp[0][0], &dp[1000][51], -1);
     
-    dp[n-1][t1] = 0;
-    dp[n-1][t1+1] = 0;
+    dp[n-1][t1] = dp[n-1][t1+1] = 0;
 
-    if(outt >= t2) outt = t1 - (outt - t2);
+    if(outt > t2) outt = t1 - (outt - t2);
     if(outt < 0) {
         t1 += (-outt);
         t2 += (-outt);
