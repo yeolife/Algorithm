@@ -30,10 +30,8 @@ long long solution(vector<int> A, vector<vector<int>> edges) {
     queue<int> q;
     
     for(int i = 0; i < a.size(); i++) {        
-        if(degree[i] == 1) {
-            degree[i]--;
+        if(degree[i] == 1)
             q.push(i);
-        }
     }
     
     while(!q.empty()) {
@@ -49,7 +47,6 @@ long long solution(vector<int> A, vector<vector<int>> edges) {
             degree[next]--;
             a[next] += a[cur];
             ans += abs(a[cur]);
-            a[cur] = 0;
 
             if(degree[next] == 1)
                 q.push(next);
