@@ -13,14 +13,8 @@ int dfs(int cur) {
     for(int i = 0; i < nodes[cur].size(); i++) {
         int tmp = dfs(nodes[cur][i].first) + nodes[cur][i].second;
 
-        if(mx1 < tmp) {
-            if(mx1 > mx2) mx2 = mx1;
-
-            mx1 = tmp;
-        } else {
-            if(mx2 < tmp) 
-                mx2 = tmp;
-        }
+        mx2 = max(mx2, tmp);
+        if(mx2 > mx1) swap(mx1, mx2);
     }
 
     ans = max(ans, mx1 + mx2);
