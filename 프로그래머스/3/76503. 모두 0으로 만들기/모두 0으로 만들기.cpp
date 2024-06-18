@@ -2,19 +2,16 @@
 using namespace std;
 
 int degree[300001];
-bool visited[300001];
 vector<int> nodes[300001];
 
 long long solution(vector<int> A, vector<vector<int>> edges) {
-    long long ans = 0, sum = 0;
+    long long ans = 0;
     vector<long long> a;
     
-    for(int i = 0; i < A.size(); i++) {
-        sum += A[i];
+    for(int i = 0; i < A.size(); i++)
         a.push_back(A[i]);
-    }
     
-    if(sum != 0) return -1;
+    if(accumulate(a.begin(), a.end(), 0ll)) return -1;
 
     for(int i = 0; i < edges.size(); i++) {
         int a = edges[i][0];
@@ -37,19 +34,22 @@ long long solution(vector<int> A, vector<vector<int>> edges) {
     while(!q.empty()) {
         int cur = q.front();
         q.pop();
-        visited[cur] = true;
 
+        degree[cur]--;
+        
         for(int i = 0; i < nodes[cur].size(); i++) {
             int next = nodes[cur][i];
 
-            if(visited[next]) continue;
-
+            if(!degree[next]) continue;
+            
             degree[next]--;
             a[next] += a[cur];
             ans += abs(a[cur]);
 
             if(degree[next] == 1)
                 q.push(next);
+            
+            break;
         }
     }
 
