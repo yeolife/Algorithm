@@ -25,9 +25,9 @@ vector<string> solution(vector<string> s) {
         int j = 0;
         for(; j < dq.size(); j++) {
             if(j == dq.size() - 1 && dq[j] == '1') break;
-            if(j + 1 < dq.size() && dq[j] == '1' && dq[j + 1] == '1')
-                break;
-            else ret += dq[j];
+            if(dq[j] == '1' && dq[j + 1] == '1') break;
+            
+            ret += dq[j];
         }
         
         while(cnt) {
