@@ -18,30 +18,28 @@ vector<string> solution(vector<string> s) {
             }            
         }
         
-        // 앞에서부터 111이면 110 담음
+        // 앞에서부터 11이면 110 담음
         string ret = "";
         string ooz = "110";
         
-        int idx = 0;
-        
-        for(int j = dq.size() - 1; j >= 0; j--) {
-            if(dq[j] == '0') {
-                idx = j + 1;
+        int j = 0;
+        for(; j < dq.size(); j++) {
+            if(j == dq.size() - 1 && dq[j] == '1') break;
+            if(j + 1 < dq.size() && dq[j] == '1' && dq[j + 1] == '1')
                 break;
-            }
+            else ret += dq[j];
         }
-                
-        for(int j = 0; j < idx; j++)
-            ret += dq[j];
         
         while(cnt) {
             ret += ooz;
             cnt--;
         }
         
-        for(int j = idx; j < dq.size(); j++)
+        while(j < dq.size()) {
             ret += dq[j];
-
+            j++;
+        }
+        
         answer.push_back(ret);
     }
     
